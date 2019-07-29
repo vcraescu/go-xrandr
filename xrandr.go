@@ -15,8 +15,9 @@ type RefreshRateValue float32
 
 // Size screen size or resolution
 type Size struct {
-	Width  float32
-	Height float32
+	Width      float32
+	Height     float32
+	Interlaced bool
 }
 
 // Position screen position
@@ -341,8 +342,8 @@ func parseSize(s string) (*Size, error) {
 	if err != nil {
 		return nil, fmt.Errorf("could not parse mode width size (%s): %s", s, err)
 	}
-
-	height, err := strconv.Atoi(strings.TrimSpace(res[1]))
+	heightStr, interlaced := isInterlaced(strings.TrimSpace(res[1]))
+	height, err := strconv.Atoi(heightStr)
 	if err != nil {
 		return nil, fmt.Errorf("could not parse mode height size (%s): %s", s, err)
 	}
@@ -350,7 +351,18 @@ func parseSize(s string) (*Size, error) {
 	return &Size{
 		Width:  float32(width),
 		Height: float32(height),
+		Interlaced: interlaced,
 	}, nil
+}
+
+func isInterlaced(height string) (string, bool) {
+	re := regexp.MustCompile("(i|p)$")
+	if !re.MatchString(height) {
+		return height, false
+	}
+	lastChar := len(height) - 1
+	interlaced := height[lastChar] == 'i'
+	return height[:lastChar], interlaced
 }
 
 func parseSizeWithPosition(s string) (*Size, *Position, error) {

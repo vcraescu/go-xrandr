@@ -403,14 +403,14 @@ func TestMonitor_DPI(t *testing.T) {
 					{Current: false, Value: xrandr.RefreshRateValue(54)},
 				},
 				Resolution: xrandr.Size{
-					Width: 3840,
+					Width:  3840,
 					Height: 2160,
 				},
 			},
 		},
 
 		Size: xrandr.Size{
-			Width: 487,
+			Width:  487,
 			Height: 247,
 		},
 	}
