@@ -1,4 +1,4 @@
-module github.com/vcraescu/go-xrandr
+module github.com/askm3/go-xrandr
 
 require (
 	github.com/davecgh/go-spew v1.1.1 // indirect
