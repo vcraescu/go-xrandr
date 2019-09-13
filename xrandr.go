@@ -15,47 +15,47 @@ type RefreshRateValue float32
 
 // Size screen size or resolution
 type Size struct {
-	Width  float32
-	Height float32
+	Width  float32 `json:"width"`
+	Height float32 `json:"height"`
 }
 
 // Position screen position
 type Position struct {
-	X int
-	Y int
+	X int `json:"x"`
+	Y int `json:"y"`
 }
 
 // RefreshRate mode refresh rate
 type RefreshRate struct {
-	Value     RefreshRateValue
-	Current   bool
-	Preferred bool
+	Value     RefreshRateValue `json:"value"`
+	Current   bool             `json:"current"`
+	Preferred bool             `json:"preferred"`
 }
 
 // Mode xrandr output mode
 type Mode struct {
-	Resolution   Size
-	RefreshRates []RefreshRate
+	Resolution   Size          `json:"resolution"`
+	RefreshRates []RefreshRate `json:"refresh_rates"`
 }
 
 // Monitor all the info of xrandr output
 type Monitor struct {
-	ID         string
-	Modes      []Mode
-	Primary    bool
-	Size       Size
-	Connected  bool
-	Resolution Size
-	Position   Position
+	ID         string   `json:"id"`
+	Modes      []Mode   `json:"modes"`
+	Primary    bool     `json:"primary"`
+	Size       Size     `json:"size"`
+	Connected  bool     `json:"connected"`
+	Resolution Size     `json:"resolution"`
+	Position   Position `json:"position"`
 }
 
 // Screen all the info of xrandr screen
 type Screen struct {
-	No                int
-	CurrentResolution Size
-	MinResolution     Size
-	MaxResolution     Size
-	Monitors          []Monitor
+	No                int       `json:"no"`
+	CurrentResolution Size      `json:"current_resolution"`
+	MinResolution     Size      `json:"min_resolution"`
+	MaxResolution     Size      `json:"max_resolution"`
+	Monitors          []Monitor `json:"monitors"`
 }
 
 // Screens slice of screens
