@@ -1,9 +1,10 @@
 package xrandr_test
 
 import (
+	"testing"
+
 	"github.com/stretchr/testify/assert"
 	"github.com/vcraescu/go-xrandr"
-	"testing"
 )
 
 func TestParseSize(t *testing.T) {
@@ -289,6 +290,19 @@ eDP-2-2 connected 3840x2160+5568+0 (normal left inverted right x axis y axis) 34
 	monitor = screen.Monitors[1]
 	assert.Equal(t, "HDMI-1", monitor.ID)
 	assert.False(t, monitor.Connected)
+	assert.Equal(t, xrandr.Size{
+		Width:  5568,
+		Height: 3132,
+	}, monitor.Resolution)
+	assert.Equal(t, xrandr.Position{
+		X: 0,
+		Y: 0,
+	}, monitor.Position)
+	assert.Equal(t, xrandr.Size{
+		Width:  597,
+		Height: 336,
+	}, monitor.Size)
+	assert.Len(t, monitor.Modes, 0)
 
 	monitor = screen.Monitors[2]
 	assert.Equal(t, "eDP-1-1", monitor.ID)
@@ -403,14 +417,14 @@ func TestMonitor_DPI(t *testing.T) {
 					{Current: false, Value: xrandr.RefreshRateValue(54)},
 				},
 				Resolution: xrandr.Size{
-					Width: 3840,
+					Width:  3840,
 					Height: 2160,
 				},
 			},
 		},
 
 		Size: xrandr.Size{
-			Width: 487,
+			Width:  487,
 			Height: 247,
 		},
 	}
