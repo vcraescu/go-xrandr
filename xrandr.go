@@ -265,15 +265,17 @@ func parseMonitorLine(line string) (*Monitor, error) {
 	}
 
 	connected := strings.Contains(line, " connected ")
-	if !connected {
-		return &monitor, nil
-	}
-
 	primary := strings.Contains(line, "primary")
+
 	re := regexp.MustCompile(`\d+mm\s*x\s*\d+mm`)
 	sizeStr := re.FindString(tokens[1])
+
 	if sizeStr == "" {
-		return nil, fmt.Errorf("could not determine monitor size (mm), expected WWWmm x HHHmm: %s", line)
+		if connected {
+			return nil, fmt.Errorf("could not determine monitor size (mm), expected WWWmm x HHHmm: %s", line)
+		}
+		// Disconnected screens might or might not have a size set. Default to a zero one if not present.
+		sizeStr = "0mm x 0mm"
 	}
 
 	sizeStr = strings.Replace(sizeStr, "mm", "", 2)
@@ -285,7 +287,11 @@ func parseMonitorLine(line string) (*Monitor, error) {
 	re = regexp.MustCompile(`\d+\s*x\s*\d+\+\d+\+\d+`)
 	resStr := re.FindString(tokens[1])
 	if resStr == "" {
-		return nil, fmt.Errorf("could not determine monitor resolution and position, expected WxH+X+Y: %s", line)
+		if connected {
+			return nil, fmt.Errorf("could not determine monitor resolution and position, expected WxH+X+Y: %s", line)
+		}
+		// Disconnected screens might or might not have a resolution set. Default to a zero one if not present.
+		resStr = "0x0+0+0"
 	}
 
 	resolution, position, err := parseSizeWithPosition(resStr)
@@ -293,7 +299,7 @@ func parseMonitorLine(line string) (*Monitor, error) {
 		return nil, fmt.Errorf("could not determine monitor resolution and position: %s", err)
 	}
 
-	monitor.Connected = true
+	monitor.Connected = connected
 	monitor.Primary = primary
 	monitor.Size = *size
 	monitor.Position = *position
