@@ -15,11 +15,12 @@ type CommandBuilder struct {
 
 // OutputCommandBuilder xrandr command builder for flag --output
 type OutputCommandBuilder struct {
-	monitor Monitor
-	scale   float32
-	leftOf  *Monitor
-	primary bool
-	parent  CommandBuilder
+	monitor  Monitor
+	scale    float32
+	rotation Rotation
+	leftOf   *Monitor
+	primary  bool
+	parent   CommandBuilder
 }
 
 // DPI sets the dpi --dpi flag
@@ -60,6 +61,13 @@ func NewOutputCommand(monitor Monitor) OutputCommandBuilder {
 // Scale sets the --scale flag
 func (ocb OutputCommandBuilder) Scale(scale float32) OutputCommandBuilder {
 	ocb.scale = scale
+
+	return ocb
+}
+
+// Rotate sets the --rotate flag
+func (ocb OutputCommandBuilder) Rotate(rotation Rotation) OutputCommandBuilder {
+	ocb.rotation = rotation
 
 	return ocb
 }
@@ -116,6 +124,10 @@ func (ocb OutputCommandBuilder) getCommandArgs() ([]string, error) {
 	args = append(args, "--output", ocb.monitor.ID)
 	if ocb.scale != 1 {
 		args = append(args, "--scale", fmt.Sprintf("%0.3fx%0.3f", ocb.scale, ocb.scale))
+	}
+
+	if ocb.rotation != "" {
+		args = append(args, "--rotate", string(ocb.rotation))
 	}
 
 	args = append(args, "--pos", fmt.Sprintf("%dx%d", ocb.monitor.Position.X, ocb.monitor.Position.Y))

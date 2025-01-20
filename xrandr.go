@@ -13,6 +13,16 @@ import (
 // RefreshRateValue refresh rate value
 type RefreshRateValue float32
 
+// Rotation screen rotation
+type Rotation string
+
+const (
+	RotationNormal Rotation = "normal"
+	RotationLeft   Rotation = "left"
+	RotationRight  Rotation = "right"
+	RotationInvert Rotation = "inverted"
+)
+
 // Size screen size or resolution
 type Size struct {
 	Width  float32 `json:"width"`
