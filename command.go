@@ -122,7 +122,7 @@ func (ocb OutputCommandBuilder) getCommandArgs() ([]string, error) {
 	}
 
 	args = append(args, "--output", ocb.monitor.ID)
-	if ocb.scale != 1 {
+	if ocb.scale != 0 {
 		args = append(args, "--scale", fmt.Sprintf("%0.3fx%0.3f", ocb.scale, ocb.scale))
 	}
 
